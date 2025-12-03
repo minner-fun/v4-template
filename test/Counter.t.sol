@@ -16,10 +16,10 @@ import {LiquidityAmounts} from "@uniswap/v4-core/test/utils/LiquidityAmounts.sol
 import {IPositionManager} from "@uniswap/v4-periphery/src/interfaces/IPositionManager.sol";
 import {Constants} from "@uniswap/v4-core/test/utils/Constants.sol";
 
-import {EasyPosm} from "./utils/libraries/EasyPosm.sol";
+import {EasyPosm} from "./utils/libraries/EasyPosm.sol"; // position的mork
 
 import {Counter} from "../src/Counter.sol";
-import {BaseTest} from "./utils/BaseTest.sol";
+import {BaseTest} from "./utils/BaseTest.sol"; // 包含了一些基础部署和货币对部署的函数
 
 contract CounterTest is BaseTest {
     using EasyPosm for IPositionManager;
@@ -40,30 +40,30 @@ contract CounterTest is BaseTest {
     int24 tickUpper;
 
     function setUp() public {
-        // Deploys all required artifacts.
+        // Deploys all required artifacts. 需要部署所有必要的artifacts
         deployArtifactsAndLabel();
 
-        (currency0, currency1) = deployCurrencyPair();
+        (currency0, currency1) = deployCurrencyPair(); // 部署货币对
 
-        // Deploy the hook to an address with the correct flags
+        // Deploy the hook to an address with the correct flags // 部署hook到具有正确标志的地址
         address flags = address(
             uint160(
                 Hooks.BEFORE_SWAP_FLAG | Hooks.AFTER_SWAP_FLAG | Hooks.BEFORE_ADD_LIQUIDITY_FLAG
                     | Hooks.BEFORE_REMOVE_LIQUIDITY_FLAG
-            ) ^ (0x4444 << 144) // Namespace the hook to avoid collisions
+            ) ^ (0x4444 << 144) // Namespace the hook to avoid collisions // 命名空间hook以避免冲突
         );
-        bytes memory constructorArgs = abi.encode(poolManager); // Add all the necessary constructor arguments from the hook
+        bytes memory constructorArgs = abi.encode(poolManager); // Add all the necessary constructor arguments from the hook // 添加所有必要的构造函数参数
         deployCodeTo("Counter.sol:Counter", constructorArgs, flags);
-        hook = Counter(flags);
+        hook = Counter(flags); // 部署hook
 
-        // Create the pool
+        // Create the pool // 创建池
         poolKey = PoolKey(currency0, currency1, 3000, 60, IHooks(hook));
-        poolId = poolKey.toId();
+        poolId = poolKey.toId(); // 转换为池ID
         poolManager.initialize(poolKey, Constants.SQRT_PRICE_1_1);
 
-        // Provide full-range liquidity to the pool
-        tickLower = TickMath.minUsableTick(poolKey.tickSpacing);
-        tickUpper = TickMath.maxUsableTick(poolKey.tickSpacing);
+        // Provide full-range liquidity to the pool 
+        tickLower = TickMath.minUsableTick(poolKey.tickSpacing); // 计算最小可用tick
+        tickUpper = TickMath.maxUsableTick(poolKey.tickSpacing); // 计算最大可用tick
 
         uint128 liquidityAmount = 100e18;
 
