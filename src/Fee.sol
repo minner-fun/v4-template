@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
+import {console} from "forge-std/console.sol";
+
 
 import {IPoolManager} from "@uniswap/v4-core/src/interfaces/IPoolManager.sol";
 import {BaseHook} from "@openzeppelin/uniswap-hooks/src/base/BaseHook.sol";
@@ -59,7 +61,7 @@ contract FeeHook is BaseHook {
      * 但不会直接从用户那里收取额外费用。
      * SwapRouter 只会从用户那里拿走 amountSpecified 的金额。
      */
-    function _beforeSwap(address, PoolKey calldata, SwapParams calldata params, bytes calldata)
+    function _beforeSwap(address, PoolKey calldata, SwapParams calldata, bytes calldata)
         internal
         pure
         override

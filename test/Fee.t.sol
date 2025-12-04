@@ -2,6 +2,8 @@
 pragma solidity ^0.8.26;
 
 import {Test} from "forge-std/Test.sol";
+import {console} from "forge-std/console.sol";
+import {console2} from "forge-std/console2.sol";
 
 import {IHooks} from "@uniswap/v4-core/src/interfaces/IHooks.sol";
 import {Hooks} from "@uniswap/v4-core/src/libraries/Hooks.sol";
@@ -155,6 +157,7 @@ contract FeeTest is BaseTest {
         // 验证输出合理：应该收到接近等值的 token1（扣除费用和滑点）
         // 费率 0.301% + 滑点，所以大约收到 98-99% 的输出
         uint256 amountOut = uint256(uint128(swapDelta.amount1()));
+        console2.log("amountOut", amountOut);
         assertGt(amountOut, amountIn * 98 / 100, "Should receive at least 98% of input");
         assertLt(amountOut, amountIn, "Should receive less than input due to fees");
     }
