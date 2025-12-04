@@ -10,7 +10,7 @@ contract BaseTest is Test, Deployers {
     function deployArtifactsAndLabel() internal {
         deployArtifacts();
 
-        vm.label(address(permit2), "Permit2");
+        vm.label(address(permit2), "Permit2"); // 给地址打标签
         vm.label(address(poolManager), "V4PoolManager");
         vm.label(address(positionManager), "V4PositionManager");
         vm.label(address(swapRouter), "V4SwapRouter");
@@ -24,6 +24,6 @@ contract BaseTest is Test, Deployers {
     }
 
     function _etch(address target, bytes memory bytecode) internal override {
-        vm.etch(target, bytecode);
+        vm.etch(target, bytecode); // 直接将bytecode设置到目标地址
     }
 }

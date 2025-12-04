@@ -95,11 +95,11 @@ contract CounterTest is BaseTest {
         assertEq(hook.beforeSwapCount(poolId), 0);
         assertEq(hook.afterSwapCount(poolId), 0);
 
-        // Perform a test swap //
+        // Perform a test swap // 执行测试交换
         uint256 amountIn = 1e18;
         BalanceDelta swapDelta = swapRouter.swapExactTokensForTokens({
             amountIn: amountIn,
-            amountOutMin: 0, // Very bad, but we want to allow for unlimited price impact
+            amountOutMin: 0, // Very bad, but we want to allow for unlimited price impact // 非常糟糕，但我们希望允许无限价格影响
             zeroForOne: true,
             poolKey: poolKey,
             hookData: Constants.ZERO_BYTES,

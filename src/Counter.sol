@@ -16,6 +16,7 @@ contract Counter is BaseHook {
     // NOTE: ---------------------------------------------------------
     // state variables should typically be unique to a pool
     // a single hook contract should be able to service multiple pools
+    // NOTE: 状态变量通常应该是唯一的，一个hook合约应该能够服务多个池
     // ---------------------------------------------------------------
 
     mapping(PoolId => uint256 count) public beforeSwapCount;
@@ -46,7 +47,7 @@ contract Counter is BaseHook {
     }
 
     // -----------------------------------------------
-    // NOTE: see IHooks.sol for function documentation
+    // NOTE: see IHooks.sol for function documentation 查看IHooks.sol中的函数文档
     // -----------------------------------------------
 
     function _beforeSwap(address, PoolKey calldata key, SwapParams calldata, bytes calldata)
@@ -54,8 +55,8 @@ contract Counter is BaseHook {
         override
         returns (bytes4, BeforeSwapDelta, uint24)
     {
-        beforeSwapCount[key.toId()]++;
-        return (BaseHook.beforeSwap.selector, BeforeSwapDeltaLibrary.ZERO_DELTA, 0);
+        beforeSwapCount[key.toId()]++; // 记录池子被调用beforeSwap的次数
+        return (BaseHook.beforeSwap.selector, BeforeSwapDeltaLibrary.ZERO_DELTA, 0); // 返回beforeSwap的selector和delta
     }
 
     function _afterSwap(address, PoolKey calldata key, SwapParams calldata, BalanceDelta, bytes calldata)
@@ -63,8 +64,8 @@ contract Counter is BaseHook {
         override
         returns (bytes4, int128)
     {
-        afterSwapCount[key.toId()]++;
-        return (BaseHook.afterSwap.selector, 0);
+        afterSwapCount[key.toId()]++; // 记录池子被调用afterSwap的次数
+        return (BaseHook.afterSwap.selector, 0); // 返回afterSwap的selector和delta
     }
 
     function _beforeAddLiquidity(address, PoolKey calldata key, ModifyLiquidityParams calldata, bytes calldata)
@@ -72,8 +73,8 @@ contract Counter is BaseHook {
         override
         returns (bytes4)
     {
-        beforeAddLiquidityCount[key.toId()]++;
-        return BaseHook.beforeAddLiquidity.selector;
+        beforeAddLiquidityCount[key.toId()]++; // 记录池子被调用beforeAddLiquidity的次数
+        return BaseHook.beforeAddLiquidity.selector; // 返回beforeAddLiquidity的selector
     }
 
     function _beforeRemoveLiquidity(address, PoolKey calldata key, ModifyLiquidityParams calldata, bytes calldata)
@@ -81,7 +82,7 @@ contract Counter is BaseHook {
         override
         returns (bytes4)
     {
-        beforeRemoveLiquidityCount[key.toId()]++;
-        return BaseHook.beforeRemoveLiquidity.selector;
+        beforeRemoveLiquidityCount[key.toId()]++; // 记录池子被调用beforeRemoveLiquidity的次数
+        return BaseHook.beforeRemoveLiquidity.selector; // 返回beforeRemoveLiquidity的selector
     }
 }
